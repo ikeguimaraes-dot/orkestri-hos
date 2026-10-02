@@ -2,141 +2,171 @@ import { ProductApp, SalesMetricData, ReservationMetricData, EventLog, Operation
 
 export const INITIAL_PRODUCTS: ProductApp[] = [
   {
-    id: 'serena-ai',
-    name: 'Serena AI',
-    tagline: 'Automação & Reservas Inteligentes',
-    category: 'Inteligência Artificial',
+    id: 'phi',
+    name: 'Phi',
+    tagline: 'Gestão Financeira & DRE',
+    category: 'Controladoria & Finanças',
     status: 'Ativo',
-    url: 'https://serena.ai',
+    url: 'https://kph-os-financeiro.vercel.app',
+    icon: 'calculator',
+    logoUrl: '/logos/phi.png',
+    gradient: 'from-emerald-400 via-teal-500 to-cyan-600',
+    description: 'Controladoria financeira de alta precisão, fluxo de caixa, conciliação bancária automatizada e DRE gerencial em tempo real.',
+    version: 'v2.8.0',
+    metricsPreview: {
+      label: 'Margem EBITDA',
+      value: '24.2%',
+      trend: '+3.4%'
+    },
+    features: [
+      'DRE gerencial em tempo real (competência e caixa)',
+      'Conciliação bancária automatizada e contas a pagar/receber',
+      'Auditoria contínua de custos e notas fiscais',
+      'Exportação executiva para PDF e relatórios para investidores'
+    ]
+  },
+  {
+    id: 'mise',
+    name: 'Mise',
+    tagline: 'Backoffice, Estoque & Compras',
+    category: 'Backoffice & Suprimentos',
+    status: 'Ativo',
+    url: 'https://mise-backoffice-nine.vercel.app',
+    icon: 'layers',
+    logoUrl: '/logos/mise.png',
+    gradient: 'from-orange-500 via-amber-500 to-rose-600',
+    description: 'Gestão integrada de suprimentos, compras automáticas com fornecedores, estoque mínimo, controle de lote e conferência de notas fiscais.',
+    version: 'v3.1.2',
+    metricsPreview: {
+      label: 'Giro de Estoque',
+      value: '98.2%',
+      trend: 'Estável'
+    },
+    features: [
+      'Cotação e emissão de pedidos de compra automatizados',
+      'Controle rigoroso de lote e validade de insumos perecíveis',
+      'Entrada direta de NF-e via SEFAZ / XML',
+      'Auditoria de rupturas e perdas operacionais'
+    ]
+  },
+  {
+    id: 'le-chefe',
+    name: 'Le Chefe',
+    tagline: 'Fichas Técnicas, Custos & CMV',
+    category: 'Engenharia de Cardápio',
+    status: 'Ativo',
+    url: 'https://fichatecnica-sandy.vercel.app',
+    icon: 'utensils',
+    logoUrl: '/logos/le-chef.png',
+    gradient: 'from-rose-500 via-pink-600 to-purple-600',
+    description: 'Engenharia de receitas, cálculo dinâmico de Custo de Mercadoria Vendida (CMV), tabelas nutricionais e rendimentos de preparação.',
+    version: 'v2.4.0',
+    metricsPreview: {
+      label: 'CMV Médio',
+      value: '28.4%',
+      trend: '-1.2%'
+    },
+    features: [
+      'Fichas técnicas operacionais e gerenciais completas',
+      'Recálculo automático de custos por variação de insumos',
+      'Matriz de engenharia de cardápio (Menu Engineering Matrix)',
+      'Modo passo a passo de preparo para a equipe de cozinha'
+    ]
+  },
+  {
+    id: 'maestri',
+    name: 'Maestri',
+    tagline: 'Inteligência de Negócios & BI',
+    category: 'Inteligência & Analytics',
+    status: 'Ativo',
+    url: 'https://kph-os.vercel.app/inteligencia',
     icon: 'bot',
+    logoUrl: '/logos/maestri.png',
     gradient: 'from-cyan-400 via-blue-500 to-indigo-600',
-    description: 'Plataforma cognitiva de atendimento omnicanal com IA generativa para automação de reservas, confirmações no WhatsApp e respostas personalizadas 24/7.',
-    version: 'v3.4.2',
+    description: 'Central de inteligência analítica com previsibilidade de demanda, ticket médio, análise de comportamento de consumo e alertas preditivos.',
+    version: 'v3.5.0',
+    metricsPreview: {
+      label: 'Previsão de Demanda',
+      value: '96.8%',
+      trend: '+4.1%'
+    },
+    features: [
+      'Previsão de faturamento por modelos de machine learning',
+      'Segmentação RFM e hábitos de consumo de clientes',
+      'Painel executivo com metas dinâmicas por unidade',
+      'Alertas preditivos de desvio de KPI e anomalias'
+    ]
+  },
+  {
+    id: 'ops',
+    name: 'Ops.',
+    tagline: 'KDS, Produção & Despacho',
+    category: 'Operações & Cozinha',
+    status: 'Ativo',
+    url: 'https://kph-os.vercel.app/operacao',
+    icon: 'utensils',
+    logoUrl: '/logos/ops.png',
+    gradient: 'from-amber-400 via-orange-500 to-yellow-600',
+    description: 'Kitchen Display System (KDS), balanceamento de praças de produção, tempos de espera em tempo real e eficiência da expedição.',
+    version: 'v4.1.0',
+    metricsPreview: {
+      label: 'SLA de Cozinha',
+      value: '96.4%',
+      trend: '+1.8%'
+    },
+    features: [
+      'KDS multipraça com balanceamento dinâmico de pedidos',
+      'Cronômetro visual de atraso com alertas por cores',
+      'Checklist de abertura e fechamento de turno higiênico',
+      'Integração instantânea entre salão, bar e delivery'
+    ]
+  },
+  {
+    id: 'pipou',
+    name: 'Pipou',
+    tagline: 'Escalas, Pessoas & Academy',
+    category: 'Gestão de Equipes & RH',
+    status: 'Beta',
+    url: 'https://kph-os.vercel.app/pessoas',
+    icon: 'users',
+    logoUrl: '/logos/pipou-academy.png',
+    gradient: 'from-yellow-400 via-amber-500 to-orange-500',
+    description: 'Gestão de pessoas e escalas dinâmicas orientadas pelo fluxo previsto de salão, controle de ponto e treinamentos contínuos no Pipou Academy.',
+    version: 'v2.0-beta',
+    metricsPreview: {
+      label: 'Engajamento Equipe',
+      value: '94.0%',
+      trend: '+8 novos'
+    },
+    features: [
+      'Geração inteligente de escalas com conformidade CLT',
+      'Pipou Academy: trilhas de capacitação e onboarding de novos talentos',
+      'Controle de ponto eletrônico com geolocalização',
+      'Matriz de polivalência e histórico de desempenho'
+    ]
+  },
+  {
+    id: 'talki',
+    name: 'Talki',
+    tagline: 'Atendimento Omnichannel & Reservas',
+    category: 'Comunicação & Atendimento',
+    status: 'Ativo',
+    url: 'https://talki-eight.vercel.app',
+    icon: 'bot',
+    logoUrl: '/logos/talki.png',
+    gradient: 'from-violet-500 via-indigo-600 to-blue-600',
+    description: 'Plataforma omnichannel de atendimento conversacional com IA, confirmação automática de reservas no WhatsApp e engajamento 24/7.',
+    version: 'v3.2.0',
     metricsPreview: {
       label: 'Conversas Ativas',
       value: '1.428',
       trend: '+24.6%'
     },
     features: [
-      'Agente conversacional treinado com cardápios e políticas',
-      'Confirmação automática de no-show via WhatsApp',
-      'Integração nativa com Tagme e sistemas de PDV',
-      'Insights preditivos de cancelamento'
-    ]
-  },
-  {
-    id: 'dre-auditor',
-    name: 'DRE Auditor',
-    tagline: 'Auditoria Financeira & DRE Gerencial',
-    category: 'Controladoria & Finanças',
-    status: 'Ativo',
-    url: 'https://dreauditor.io',
-    icon: 'calculator',
-    gradient: 'from-emerald-400 via-teal-500 to-cyan-600',
-    description: 'Demonstrativo de Resultado do Exercício com auditoria algorítmica contínua. Conciliação bancária automatizada, análise de margem e alertas de CMV fora da curva.',
-    version: 'v2.8.0',
-    metricsPreview: {
-      label: 'Margem EBITDA',
-      value: '23.8%',
-      trend: '+3.2%'
-    },
-    features: [
-      'DRE estruturado em tempo real (competência e caixa)',
-      'Auditoria de notas fiscais vs pedidos de compra',
-      'Deteção preditiva de desvios e furos de estoque',
-      'Exportação executiva para PDF e BI'
-    ]
-  },
-  {
-    id: 'kph-operacao',
-    name: 'KPH Operação',
-    tagline: 'Gestão Operacional & Cozinha Industrial',
-    category: 'Operações & Cozinha',
-    status: 'Ativo',
-    url: 'https://kph.orkestri.com/operacao',
-    icon: 'utensils',
-    gradient: 'from-amber-400 via-orange-500 to-rose-600',
-    description: 'Sistema avançado de KDS (Kitchen Display System), roteirização de praças, monitoramento de tempo de preparo e redução drástica de desperdício.',
-    version: 'v4.1.0',
-    metricsPreview: {
-      label: 'SLA Cozinha',
-      value: '96.4%',
-      trend: '+1.8%'
-    },
-    features: [
-      'KDS multipraça com balanceamento de carga automático',
-      'Cronômetro dinâmico com alerta visual de atraso',
-      'Módulo de checklist higiênico e abertura de turno',
-      'Integração instantânea com salão e delivery'
-    ]
-  },
-  {
-    id: 'kph-pessoas',
-    name: 'KPH Pessoas',
-    tagline: 'Gestão de Equipes & RH Estratégico',
-    category: 'Capital Humano',
-    status: 'Beta',
-    url: 'https://kph.orkestri.com/pessoas',
-    icon: 'users',
-    gradient: 'from-purple-400 via-pink-500 to-rose-500',
-    description: 'Escalas inteligentes de atendimento baseadas na previsão de fluxo de clientes, controle de banco de horas, avaliação de performance e gamificação.',
-    version: 'v1.2-beta',
-    metricsPreview: {
-      label: 'Colaboradores Ativos',
-      value: '84',
-      trend: '+6 novos'
-    },
-    features: [
-      'Geração algorítmica de escala respeitando CLT',
-      'Ponto eletrônico com reconhecimento facial / geolocalização',
-      'Matriz de polivalência e treinamentos obrigatórios',
-      'NPS interno de satisfação da equipe'
-    ]
-  },
-  {
-    id: 'tagme-hub',
-    name: 'Tagme Hub',
-    tagline: 'Integração & Gestão de Reservas',
-    category: 'Hospitalidade',
-    status: 'Ativo',
-    url: 'https://tagme.com.br',
-    icon: 'calendar',
-    gradient: 'from-violet-500 via-indigo-600 to-blue-700',
-    description: 'Sincronizador central de mesas e reservas omnicanal. Unifica reservas do site, Google Reserve, concierge e aplicativo em um único mapa interativo de salão.',
-    version: 'v5.0.3',
-    metricsPreview: {
-      label: 'Reservas Hoje',
-      value: '192',
-      trend: '+18.4%'
-    },
-    features: [
-      'Mapa de salão interativo em 2D/3D',
-      'Sincronização em tempo real de cancelamentos e check-ins',
-      'Gestão de fila de espera com notificação por SMS/WhatsApp',
-      'Histórico e preferências VIP do cliente'
-    ]
-  },
-  {
-    id: 'totvs-erp',
-    name: 'TOTVS ERP',
-    tagline: 'Conector de Gestão Empresarial',
-    category: 'Backoffice & Fiscal',
-    status: 'Manutenção',
-    url: 'https://totvs.com',
-    icon: 'layers',
-    gradient: 'from-slate-400 via-zinc-600 to-neutral-800',
-    description: 'Conector corporativo e sincronização de dados mestre com TOTVS Protheus / Chef Web. Gestão fiscal, emissão de NF-e e controle de contas a pagar/receber.',
-    version: 'v3.1.9',
-    metricsPreview: {
-      label: 'Sync Status',
-      value: 'Pausado',
-      trend: 'Job #412'
-    },
-    features: [
-      'Sincronização bidirecional de pedidos e notas fiscais',
-      'Módulo de auditoria fiscal e SPED pré-validado',
-      'Gestão de contratos com fornecedores e insumos',
-      'Fila de mensageria com retry automático e dead-letter'
+      'Agente conversacional IA com cardápios integrados',
+      'Confirmação e redução drástica de no-show via WhatsApp',
+      'Sincronização em tempo real com mapa de salão',
+      'Disparo de campanhas e pesquisas de NPS pós-experiência'
     ]
   }
 ];
@@ -155,10 +185,10 @@ export const INITIAL_SALES_METRIC: SalesMetricData = {
     { day: 'Dom', amount: 51950 }
   ],
   breakdown: [
-    { name: 'Serena AI (Reservas)', share: 44, amount: 214566, color: '#00f2fe' },
-    { name: 'KPH Operação (Consumo)', share: 36, amount: 175554, color: '#10b981' },
-    { name: 'Tagme Hub (Eventos)', share: 15, amount: 73147, color: '#8a2be2' },
-    { name: 'Outros Canais', share: 5, amount: 24383, color: '#f59e0b' }
+    { name: 'Phi (Controladoria)', share: 38, amount: 185307, color: '#10b981' },
+    { name: 'Talki (Reservas)', share: 29, amount: 141418, color: '#00f2fe' },
+    { name: 'Mise (Suprimentos)', share: 21, amount: 102406, color: '#f59e0b' },
+    { name: 'Ops. (Cozinha)', share: 12, amount: 58519, color: '#8a2be2' }
   ]
 };
 
@@ -198,7 +228,7 @@ export const INITIAL_OPERATIONAL_METRIC: OperationalMetricData = {
 export const INITIAL_EVENTS: EventLog[] = [
   {
     id: 'evt-1',
-    product: 'Serena AI',
+    product: 'Talki',
     title: 'Reserva Confirmada via WhatsApp',
     description: 'Mesa #14 para 6 pessoas às 20h30 confirmada com sucesso após lembrete automático.',
     status: 'success',
@@ -207,16 +237,16 @@ export const INITIAL_EVENTS: EventLog[] = [
   },
   {
     id: 'evt-2',
-    product: 'Tagme Hub',
-    title: 'Sincronização Omnicanal Concluída',
-    description: '18 novas reservas importadas do canal Google Reserve com reconciliação imediata.',
+    product: 'Phi',
+    title: 'Fechamento Contábil Conciliado',
+    description: 'Lote diário de faturamento conciliado com 100% de precisão (R$ 96.800,00).',
     status: 'success',
     timestamp: '2026-10-02T08:54:22Z',
     relativeTime: 'Há 4 minutos'
   },
   {
     id: 'evt-3',
-    product: 'KPH Operação',
+    product: 'Ops.',
     title: 'Tempo de Espera em Atenção',
     description: 'Prato #104 (Bife Ancho Especial) na praça da grelha atingiu 13m 30s de preparo.',
     status: 'warning',
@@ -225,29 +255,38 @@ export const INITIAL_EVENTS: EventLog[] = [
   },
   {
     id: 'evt-4',
-    product: 'DRE Auditor',
-    title: 'Conciliação Bancária Finalizada',
-    description: 'Lote diário de faturamento conciliado com 100% de precisão (R$ 96.800,00).',
-    status: 'success',
+    product: 'Le Chefe',
+    title: 'Atualização de Custo de Insumo',
+    description: 'Cotação de Filé Mignon atualizada com recálculo automático de CMV na Ficha #42.',
+    status: 'info',
     timestamp: '2026-10-02T08:35:12Z',
     relativeTime: 'Há 23 minutos'
   },
   {
     id: 'evt-5',
-    product: 'TOTVS ERP',
-    title: 'Manutenção Preventiva de Conector',
-    description: 'Job de sincronização em pausa para atualização de certificados de segurança TLS 1.3.',
-    status: 'warning',
+    product: 'Mise',
+    title: 'Pedido de Reposição Enviado',
+    description: 'Pedido automático #882 enviado para distribuidor de hortifrúti após atingir estoque mínimo.',
+    status: 'success',
     timestamp: '2026-10-02T08:15:00Z',
     relativeTime: 'Há 43 minutos'
   },
   {
     id: 'evt-6',
-    product: 'KPH Pessoas',
+    product: 'Pipou',
     title: 'Escala do Turno Noturno Validada',
     description: '100% dos postos chave preenchidos com saldo positivo no banco de horas.',
     status: 'info',
     timestamp: '2026-10-02T07:50:00Z',
     relativeTime: 'Há 1 hora'
+  },
+  {
+    id: 'evt-7',
+    product: 'Maestri',
+    title: 'Projeção de Fluxo de Fim de Semana',
+    description: 'Previsão de 420 atendimentos para sábado gerada com índice de confiança de 96.8%.',
+    status: 'success',
+    timestamp: '2026-10-02T07:30:00Z',
+    relativeTime: 'Há 1h 30m'
   }
 ];

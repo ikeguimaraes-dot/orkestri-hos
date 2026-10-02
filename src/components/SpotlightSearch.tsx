@@ -179,8 +179,12 @@ export const SpotlightSearch: React.FC<SpotlightSearchProps> = ({
                         }`}
                       >
                         <div className="flex items-center space-x-3">
-                          <div className={`w-8 h-8 rounded-lg bg-gradient-to-tr ${prod.gradient} flex items-center justify-center`}>
-                            <IconComp className="w-4 h-4 text-white" />
+                          <div className={`w-8 h-8 rounded-lg bg-gradient-to-tr ${prod.gradient} flex items-center justify-center overflow-hidden`}>
+                            {prod.logoUrl ? (
+                              <img src={prod.logoUrl} alt={prod.name} className="w-full h-full object-contain p-0.5" />
+                            ) : (
+                              <IconComp className="w-4 h-4 text-white" />
+                            )}
                           </div>
                           <div>
                             <div className="text-xs font-bold text-white flex items-center space-x-2">

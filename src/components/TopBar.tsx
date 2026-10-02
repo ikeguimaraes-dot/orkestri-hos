@@ -104,11 +104,13 @@ export const TopBar: React.FC<TopBarProps> = ({
             className={`px-2 py-0.5 rounded flex items-center space-x-1.5 transition-colors hover:bg-white/10 ${activeMenu === 'apple' ? 'bg-white/15' : ''}`}
             title="Menu do Sistema Orkestri"
           >
-            {/* Stylized Apple-Vision OS Logo */}
-            <svg className="w-3.5 h-3.5 fill-current text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.7)]" viewBox="0 0 170 170">
-              <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.69-3.08-7.7-7.93-12.04-14.55-6.53-10.02-11.66-21.84-15.39-35.47-3.73-13.63-5.59-26.16-5.59-37.59 0-14.92 3.65-27.18 10.95-36.78 7.3-9.6 16.57-14.52 27.81-14.77 4.9 0 10.37 1.25 16.41 3.75 6.04 2.5 10.07 3.8 12.09 3.9 1.83-.1 5.92-1.42 12.28-3.95 6.36-2.54 11.75-3.72 16.18-3.54 9.17.44 17.03 3.68 23.59 9.73 6.56 6.05 11.01 13.78 13.36 23.19-8.08 4.88-12.18 11.77-12.3 20.67-.12 8.01 3.02 14.86 9.42 20.55 6.4 5.69 13.97 9.07 22.71 10.14-1.91 5.89-4.37 12.03-7.38 18.42zM119.22 33.39c-.08-4.57 1.4-9.33 4.45-14.28 3.05-4.95 7.15-8.86 12.3-11.73.53 4.25-.62 8.87-3.46 13.86-2.84 4.99-6.9 8.79-12.18 11.41-.37.24-.74.49-1.11.74z" />
-            </svg>
-            <span className="font-semibold text-white tracking-wide text-xs">Orkestri HOS</span>
+            {/* Official Orkestri Logo */}
+            <img 
+              src="/logos/orkestri.png" 
+              alt="Orkestri" 
+              className="h-4 w-auto object-contain filter drop-shadow-[0_0_8px_rgba(0,242,254,0.4)]"
+            />
+            <span className="font-semibold text-white tracking-wide text-xs">HOS</span>
           </button>
 
           {/* Apple Dropdown */}
@@ -143,7 +145,7 @@ export const TopBar: React.FC<TopBarProps> = ({
               <button
                 onClick={() => { 
                   setActiveMenu(null); 
-                  localStorage.removeItem('orkestri_custom_products');
+                  localStorage.removeItem('orkestri_custom_products_v3');
                   window.location.reload();
                 }}
                 className="w-full text-left px-3 py-1.5 text-xs text-amber-300 hover:bg-amber-500/20 rounded-lg"

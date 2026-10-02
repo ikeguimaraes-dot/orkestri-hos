@@ -231,7 +231,7 @@ class SupabaseService {
   // Fetch Products with fallback
   public async getProducts(): Promise<ProductApp[]> {
     try {
-      const stored = localStorage.getItem('orkestri_custom_products');
+      const stored = localStorage.getItem('orkestri_custom_products_v3');
       if (stored) {
         return JSON.parse(stored);
       }

@@ -171,13 +171,21 @@ export const AppLauncher: React.FC<AppLauncherProps> = ({
               {/* Card Header: 3D Icon + Badges */}
               <div>
                 <div className="flex items-start justify-between mb-4">
-                  {/* 3D Glass Icon */}
+                  {/* 3D Glass Icon / Logo */}
                   <div className="relative">
                     <div className={`w-14 h-14 rounded-2xl bg-gradient-to-tr ${prod.gradient} p-0.5 shadow-lg group-hover:scale-105 transition-transform duration-300`}>
-                      <div className="w-full h-full rounded-[14px] bg-black/20 backdrop-blur-sm flex items-center justify-center relative overflow-hidden">
+                      <div className="w-full h-full rounded-[14px] bg-black/40 backdrop-blur-sm flex items-center justify-center relative overflow-hidden p-2">
                         {/* Upper highlight */}
                         <div className="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-white/30 to-transparent pointer-events-none" />
-                        <IconComp className="w-7 h-7 text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]" />
+                        {prod.logoUrl ? (
+                          <img 
+                            src={prod.logoUrl} 
+                            alt={prod.name} 
+                            className="w-full h-full object-contain filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)]" 
+                          />
+                        ) : (
+                          <IconComp className="w-7 h-7 text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]" />
+                        )}
                       </div>
                     </div>
                   </div>

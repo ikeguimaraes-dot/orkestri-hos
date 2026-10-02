@@ -104,8 +104,12 @@ export const AppWindow: React.FC<AppWindowProps> = ({
 
           {/* Center Window Title */}
           <div className="flex items-center space-x-2">
-            <div className={`w-5 h-5 rounded-md bg-gradient-to-tr ${product.gradient} flex items-center justify-center`}>
-              <IconComp className="w-3 h-3 text-white" />
+            <div className={`w-5 h-5 rounded-md bg-gradient-to-tr ${product.gradient} p-0.5 flex items-center justify-center overflow-hidden`}>
+              {product.logoUrl ? (
+                <img src={product.logoUrl} alt={product.name} className="w-full h-full object-contain" />
+              ) : (
+                <IconComp className="w-3 h-3 text-white" />
+              )}
             </div>
             <span className="font-semibold text-xs text-white tracking-wide">
               {product.name}
@@ -168,8 +172,12 @@ export const AppWindow: React.FC<AppWindowProps> = ({
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                   <div className="flex items-center space-x-4">
                     <div className={`w-16 h-16 rounded-2xl bg-gradient-to-tr ${product.gradient} p-0.5 shadow-xl`}>
-                      <div className="w-full h-full rounded-[14px] bg-black/20 flex items-center justify-center">
-                        <IconComp className="w-8 h-8 text-white drop-shadow-md" />
+                      <div className="w-full h-full rounded-[14px] bg-black/40 backdrop-blur-sm flex items-center justify-center p-2 overflow-hidden">
+                        {product.logoUrl ? (
+                          <img src={product.logoUrl} alt={product.name} className="w-full h-full object-contain filter drop-shadow-md" />
+                        ) : (
+                          <IconComp className="w-8 h-8 text-white drop-shadow-md" />
+                        )}
                       </div>
                     </div>
                     <div>

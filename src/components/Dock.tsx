@@ -158,8 +158,16 @@ export const Dock: React.FC<DockProps> = ({
                 {/* Glossy Top Glass Glare */}
                 <div className="absolute top-0 inset-x-0 h-1/2 rounded-t-2xl bg-gradient-to-b from-white/35 to-transparent pointer-events-none" />
 
-                {/* Inner Icon */}
-                <IconComp className="relative z-10 w-6 h-6 text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] transition-transform group-hover:scale-110" />
+                {/* Inner Icon or Logo */}
+                {prod.logoUrl ? (
+                  <img 
+                    src={prod.logoUrl} 
+                    alt={prod.name} 
+                    className="relative z-10 w-7 h-7 object-contain filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)] transition-transform group-hover:scale-110" 
+                  />
+                ) : (
+                  <IconComp className="relative z-10 w-6 h-6 text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] transition-transform group-hover:scale-110" />
+                )}
 
                 {/* Status dot if Beta or Maintenance */}
                 {prod.status === 'Beta' && (

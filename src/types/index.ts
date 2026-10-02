@@ -8,6 +8,7 @@ export interface ProductApp {
   status: AppStatus;
   url: string;
   icon: string; // icon identifier: 'bot' | 'calculator' | 'utensils' | 'users' | 'calendar' | 'layers' | 'database' | 'cpu'
+  logoUrl?: string; // image path from /logos/...
   gradient: string;
   description: string;
   version: string;

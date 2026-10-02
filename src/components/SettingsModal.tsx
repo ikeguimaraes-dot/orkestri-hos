@@ -142,7 +142,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
     const updated = [newProduct, ...products];
     onSaveProducts(updated);
-    localStorage.setItem('orkestri_custom_products', JSON.stringify(updated));
+    localStorage.setItem('orkestri_custom_products_v3', JSON.stringify(updated));
 
     // Reset form
     setNewProductName('');
@@ -158,7 +158,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
     if (confirm(`Deseja remover o produto "${name}" do launcher?`)) {
       const updated = products.filter(p => p.id !== id);
       onSaveProducts(updated);
-      localStorage.setItem('orkestri_custom_products', JSON.stringify(updated));
+      localStorage.setItem('orkestri_custom_products_v3', JSON.stringify(updated));
     }
   };
 
@@ -166,7 +166,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
     soundManager.playClick();
     if (confirm('Restaurar os 6 produtos padrão do ecossistema Orkestri?')) {
       onSaveProducts(INITIAL_PRODUCTS);
-      localStorage.removeItem('orkestri_custom_products');
+      localStorage.removeItem('orkestri_custom_products_v3');
       setSaveSuccessMessage('Produtos restaurados com sucesso!');
       setTimeout(() => setSaveSuccessMessage(null), 3000);
     }
@@ -413,8 +413,12 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                     className="p-3.5 rounded-2xl liquid-glass border border-white/10 flex items-center justify-between"
                   >
                     <div className="flex items-center space-x-3">
-                      <div className={`w-10 h-10 rounded-xl bg-gradient-to-tr ${prod.gradient} flex items-center justify-center shadow-md`}>
-                        <Sparkles className="w-5 h-5 text-white" />
+                      <div className={`w-10 h-10 rounded-xl bg-gradient-to-tr ${prod.gradient} flex items-center justify-center shadow-md overflow-hidden`}>
+                        {prod.logoUrl ? (
+                          <img src={prod.logoUrl} alt={prod.name} className="w-full h-full object-contain p-1" />
+                        ) : (
+                          <Sparkles className="w-5 h-5 text-white" />
+                        )}
                       </div>
                       <div>
                         <div className="flex items-center space-x-2">
