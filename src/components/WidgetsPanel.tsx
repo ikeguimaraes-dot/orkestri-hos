@@ -11,17 +11,12 @@ import {
   Info, 
   RefreshCw, 
   Activity, 
-  ShieldCheck,
-  Pause,
-  Play
+  ShieldCheck
 } from 'lucide-react';
 import { SalesMetricData, ReservationMetricData, OperationalMetricData, EventLog } from '../types';
-import { DEMO_UNITS, scopeDemoUnit } from '../lib/dashboardScope';
 import { soundManager } from '../lib/sound';
 
 interface WidgetsPanelProps {
-  selectedUnit: string;
-  onSelectUnit: (unitId: string) => void;
   isDemo: boolean;
   salesData: SalesMetricData;
   reservationData: ReservationMetricData;
@@ -33,28 +28,18 @@ interface WidgetsPanelProps {
 }
 
 export const WidgetsPanel: React.FC<WidgetsPanelProps> = ({
-  salesData: allSales,
-  reservationData: allReservations,
-  operationalData: allOperational,
-  eventsData: allEvents,
-  selectedUnit,
-  onSelectUnit,
+  salesData,
+  reservationData,
+  operationalData,
+  eventsData,
   isDemo,
   isLoading = false,
   onRefresh,
   onSelectProductById
 }) => {
-  const unitIndex = isDemo ? DEMO_UNITS.findIndex(unit => unit.id === selectedUnit) : -1;
-  const unit = DEMO_UNITS[unitIndex];
-  const scoped = unit ? scopeDemoUnit(unitIndex, allSales, allReservations, allOperational, allEvents) : null;
-  const salesData = scoped?.sales ?? allSales;
-  const reservationData = scoped?.reservations ?? allReservations;
-  const operationalData = scoped?.operational ?? allOperational;
-  const eventsData = scoped?.events ?? allEvents;
-  const scopeLabel = unit ? unit.name : isDemo ? 'Todas as unidades · 3 casas' : 'Visão geral · unidade não informada';
+  const scopeLabel = 'Unidade não identificada';
   const [eventFilter, setEventFilter] = useState<'all' | 'success' | 'warning' | 'error'>('all');
   const [hoveredPoint, setHoveredPoint] = useState<{ day: string; amount: number } | null>(null);
-  const [isLiveStreamActive, setIsLiveStreamActive] = useState(true);
 
   // SVG Sparkline calculation
   const maxSale = Math.max(...salesData.history.map(h => h.amount));
@@ -116,21 +101,19 @@ export const WidgetsPanel: React.FC<WidgetsPanelProps> = ({
       </div>
 
       <div className="rounded-2xl border border-white/15 bg-white/[0.04] p-4 mb-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div aria-live="polite">
-          <p className="text-xs text-slate-400">{unit ? 'Operação da unidade' : 'Visão consolidada'}</p>
-          <p className="text-lg font-semibold text-white mt-1">{scopeLabel}</p>
-          <p className="text-xs text-slate-400 mt-1">{unit ? 'Todos os indicadores e eventos abaixo são desta casa.' : isDemo ? 'Totais somam as três casas de exemplo; taxas representam a visão do grupo.' : 'Os dados recebidos ainda não identificam a unidade de origem.'}</p>
+        <div>
+          <p className="text-xs text-slate-400">Origem dos indicadores</p>
+          <p className="text-lg font-semibold text-white mt-1">{isDemo ? 'Dados demonstrativos' : 'Dados sem identificação de unidade'}</p>
+          <p className="text-xs text-slate-400 mt-1">{isDemo ? 'Valores de exemplo. Não representam o resultado das suas casas.' : 'Ainda não é possível determinar se os indicadores são de uma casa ou do grupo.'}</p>
         </div>
         <div className="flex flex-col gap-2 md:min-w-64">
           <label htmlFor="dashboard-unit" className="text-xs font-medium text-slate-300">Unidade</label>
-          <select id="dashboard-unit" value={unit?.id ?? 'all'} onChange={event => onSelectUnit(event.target.value)} disabled={!isDemo}
-            className="w-full rounded-xl border border-white/20 bg-slate-900 px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-cyan-400 disabled:opacity-60">
-            <option value="all">{isDemo ? 'Todas as unidades' : 'Unidades não disponíveis'}</option>
-            {isDemo && DEMO_UNITS.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}
+          <select id="dashboard-unit" disabled className="w-full rounded-xl border border-white/20 bg-slate-900 px-3 py-2.5 text-sm text-slate-400 disabled:opacity-70">
+            <option>Cadastro de unidades pendente</option>
           </select>
+          <p className="text-xs text-slate-400">Aguardando vínculo com as unidades reais.</p>
         </div>
       </div>
-      {isDemo && <p className="text-xs text-amber-200/90 mb-5">Demonstração · Casas e valores ilustrativos. A seleção de unidades reais depende da vinculação dos dados de cada operação.</p>}
 
       <div className="dashboard-grid grid gap-4">
         {/* CARD 1: VENDAS / FATURAMENTO */}
@@ -365,18 +348,10 @@ export const WidgetsPanel: React.FC<WidgetsPanelProps> = ({
                 </div>
                 <div>
                   <h3 className="text-xs font-semibold text-slate-200">Feed de Eventos & Logs</h3>
-                  <span className="text-[10px] text-slate-400">Stream de Auditoria e Webhooks</span>
+                  <span className="text-[10px] text-slate-400">Histórico de atividades</span>
                 </div>
               </div>
-              <button
-                onClick={() => setIsLiveStreamActive(!isLiveStreamActive)}
-                className={`p-1 rounded-md text-[10px] transition-colors ${
-                  isLiveStreamActive ? 'text-emerald-400 hover:bg-emerald-500/10' : 'text-slate-400 hover:bg-white/10'
-                }`}
-                title={isLiveStreamActive ? 'Pausar Live Feed' : 'Retomar Live Feed'}
-              >
-                {isLiveStreamActive ? <Pause className="w-3 h-3" /> : <Play className="w-3 h-3" />}
-              </button>
+
             </div>
 
             {/* Filter Pills */}
@@ -427,7 +402,7 @@ export const WidgetsPanel: React.FC<WidgetsPanelProps> = ({
                       className="p-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/5 transition-colors cursor-pointer group/item text-left"
                     >
                       <div className="flex items-center justify-between text-[10px] mb-0.5">
-                        <span className="font-semibold text-cyan-300">{evt.product}{isDemo && !unit ? ` · ${DEMO_UNITS[allEvents.indexOf(evt) % DEMO_UNITS.length].name}` : ''}</span>
+                        <span className="font-semibold text-cyan-300">{evt.product}</span>
                         <span className="text-slate-400 font-mono text-[9px]">{evt.relativeTime}</span>
                       </div>
                       <div className="flex items-start space-x-1.5 mt-0.5">
@@ -446,8 +421,8 @@ export const WidgetsPanel: React.FC<WidgetsPanelProps> = ({
           {/* Footer telemetry status */}
           <div className="mt-3 pt-2 border-t border-white/10 flex items-center justify-between text-[10px] text-slate-400">
             <span className="flex items-center space-x-1">
-              <span className={`w-1.5 h-1.5 rounded-full ${isLiveStreamActive ? 'bg-emerald-400 animate-pulse' : 'bg-slate-500'}`} />
-              <span>{isLiveStreamActive ? 'Streaming Ativo' : 'Feed Pausado'}</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
+              <span>{isDemo ? 'Eventos demonstrativos' : 'Eventos carregados'}</span>
             </span>
             <span>{filteredEvents.length} eventos registrados</span>
           </div>
@@ -540,7 +515,7 @@ export const WidgetsPanel: React.FC<WidgetsPanelProps> = ({
           <div>
             <div className="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center mb-4"><CheckCircle2 className="w-5 h-5" /></div>
             <h3 className="text-sm font-semibold text-slate-200">Pedidos expedidos</h3>
-            <p className="text-xs text-slate-400 mt-1">Hoje · {unit?.name ?? 'Visão geral'}</p>
+            <p className="text-xs text-slate-400 mt-1">Hoje · {scopeLabel}</p>
             <p className="text-3xl font-bold text-white mt-5">{operationalData.totalOrdersToday}</p>
             <p className="text-xs text-slate-400 mt-2">Produção concluída no dia</p>
           </div>
@@ -552,7 +527,7 @@ export const WidgetsPanel: React.FC<WidgetsPanelProps> = ({
           <div>
             <div className="w-9 h-9 rounded-xl bg-blue-500/20 text-blue-300 flex items-center justify-center mb-4"><Users className="w-5 h-5" /></div>
             <h3 className="text-sm font-semibold text-slate-200">Capacidade do salão</h3>
-            <p className="text-xs text-slate-400 mt-1">{unit?.name ?? 'Visão geral'}</p>
+            <p className="text-xs text-slate-400 mt-1">{scopeLabel}</p>
             <p className="text-3xl font-bold text-white mt-5">{reservationData.totalTables - reservationData.occupiedTables} <span className="text-sm font-normal text-slate-400">mesas livres</span></p>
             <p className="text-xs text-slate-400 mt-2">de {reservationData.totalTables} mesas disponíveis na operação</p>
           </div>

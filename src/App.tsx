@@ -21,9 +21,7 @@ import {
 } from './types';
 import { 
   supabaseService, 
-  DEFAULT_SUPABASE_CONFIG, 
-  loadStoredConfig, 
-  saveStoredConfig 
+  loadStoredConfig
 } from './lib/supabase';
 import { 
   INITIAL_PRODUCTS, 
@@ -44,7 +42,6 @@ export function App() {
   const [supabaseConfig, setSupabaseConfig] = useState<SupabaseConfig>(loadStoredConfig());
 
   // State: App UI & Windows
-  const [selectedUnit, setSelectedUnit] = useState('all');
   const [activeView, setActiveView] = useState<ActiveView>('split');
   const [activeProductWindow, setActiveProductWindow] = useState<ProductApp | null>(null);
   const [minimizedWindowIds, setMinimizedWindowIds] = useState<string[]>([]);
@@ -60,7 +57,6 @@ export function App() {
   const [wallpaper, setWallpaper] = useState<'midnight' | 'violet' | 'cyan' | 'aurora'>('midnight');
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   // Initial data loading & ping check
   const refreshAllData = useCallback(async () => {
@@ -93,33 +89,6 @@ export function App() {
   useEffect(() => {
     refreshAllData();
   }, [refreshAllData]);
-
-  // Periodic subtle live ticker (adds realism to real-time stream)
-  useEffect(() => {
-    const interval = setInterval(() => {
-      // Simulate real-time stream tick
-      setReservationData(prev => {
-        const delta = Math.random() > 0.6 ? (Math.random() > 0.5 ? 1 : -1) : 0;
-        const newOccupied = Math.min(prev.totalTables, Math.max(30, prev.occupiedTables + delta));
-        const rate = Math.round((newOccupied / prev.totalTables) * 100);
-        return {
-          ...prev,
-          occupiedTables: newOccupied,
-          occupancyRate: rate
-        };
-      });
-
-      // Periodically tick sales slightly
-      if (Math.random() > 0.7) {
-        setSalesData(prev => ({
-          ...prev,
-          totalRevenue: prev.totalRevenue + Math.floor(Math.random() * 250 + 50)
-        }));
-      }
-    }, 12000);
-
-    return () => clearInterval(interval);
-  }, []);
 
   // Global Keyboard Shortcuts (macOS standard)
   useEffect(() => {
@@ -241,9 +210,7 @@ export function App() {
               reservationData={reservationData}
               operationalData={operationalData}
               eventsData={eventsData}
-              isLoading={isLoading || isRefreshing}
-              selectedUnit={selectedUnit}
-              onSelectUnit={setSelectedUnit}
+              isLoading={isRefreshing}
               isDemo={supabaseConfig.useFallbackIfKeyDisabled}
               onRefresh={refreshAllData}
               onSelectProductById={handleSelectProductById}
@@ -260,9 +227,7 @@ export function App() {
               reservationData={reservationData}
               operationalData={operationalData}
               eventsData={eventsData}
-              isLoading={isLoading || isRefreshing}
-              selectedUnit={selectedUnit}
-              onSelectUnit={setSelectedUnit}
+              isLoading={isRefreshing}
               isDemo={supabaseConfig.useFallbackIfKeyDisabled}
               onRefresh={refreshAllData}
               onSelectProductById={handleSelectProductById}
