@@ -70,7 +70,10 @@ export function App() {
         supabaseService.getEventLogs(),
       ]);
 
-      setProducts(prods);
+      // Upgrade the previous bundled Pipou entry in locally saved catalogs.
+      setProducts(prods.map(product => product.id === 'pipou' && product.version === 'v2.0-beta'
+        ? { ...product, status: product.status === 'Beta' ? 'Ativo' : product.status, version: 'v2.0' }
+        : product));
       setSalesData(sales);
       setReservationData(reservations);
       setOperationalData(operational);
