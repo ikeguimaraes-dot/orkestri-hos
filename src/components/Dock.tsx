@@ -103,7 +103,7 @@ export const Dock: React.FC<DockProps> = ({
         <div className="w-[1px] h-8 bg-white/20 mx-1 self-center" />
 
         {/* 3. Predefined SaaS Products */}
-        {products.map((prod) => {
+        {products.filter(product => product.id !== 'ops').map((prod) => {
           const running = isAppRunning(prod.id);
 
           return (
@@ -122,9 +122,9 @@ export const Dock: React.FC<DockProps> = ({
                 onMouseEnter={() => setHoveredItem(prod.id)}
                 onMouseLeave={() => setHoveredItem(null)}
                 aria-label={`Abrir ${prod.name}`}
-                className={`relative w-16 sm:w-20 h-14 flex items-center justify-center transition-transform duration-200 origin-bottom hover:scale-110 hover:-translate-y-1 active:scale-95 ${running ? 'border-b-2 border-cyan-300' : ''}`}
+                className={`relative w-14 h-12 flex items-center justify-center transition-transform duration-200 origin-bottom hover:scale-105 hover:-translate-y-0.5 active:scale-95 ${running ? 'border-b-2 border-cyan-300' : ''}`}
               >
-                <ProductLogo product={prod} className="w-auto max-w-full max-h-12" />
+                <ProductLogo product={prod} className="w-auto max-w-12 max-h-7" />
 
                 {/* Status dot if Beta or Maintenance */}
                 {prod.status === 'Beta' && (
