@@ -222,7 +222,6 @@ export function App() {
               operationalData={operationalData}
               eventsData={eventsData}
               isLoading={isRefreshing}
-              isDemo={supabaseConfig.useFallbackIfKeyDisabled}
               onRefresh={refreshAllData}
               onSelectProductById={handleSelectProductById}
             />
@@ -239,7 +238,6 @@ export function App() {
               operationalData={operationalData}
               eventsData={eventsData}
               isLoading={isRefreshing}
-              isDemo={supabaseConfig.useFallbackIfKeyDisabled}
               onRefresh={refreshAllData}
               onSelectProductById={handleSelectProductById}
             />

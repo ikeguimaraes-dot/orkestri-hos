@@ -17,7 +17,6 @@ import { SalesMetricData, ReservationMetricData, OperationalMetricData, EventLog
 import { soundManager } from '../lib/sound';
 
 interface WidgetsPanelProps {
-  isDemo: boolean;
   salesData: SalesMetricData;
   reservationData: ReservationMetricData;
   operationalData: OperationalMetricData;
@@ -32,7 +31,6 @@ export const WidgetsPanel: React.FC<WidgetsPanelProps> = ({
   reservationData,
   operationalData,
   eventsData,
-  isDemo,
   isLoading = false,
   onRefresh,
   onSelectProductById
@@ -101,11 +99,6 @@ export const WidgetsPanel: React.FC<WidgetsPanelProps> = ({
       </div>
 
       <div className="rounded-2xl border border-white/15 bg-white/[0.04] p-4 mb-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <p className="text-xs text-slate-400">Origem dos indicadores</p>
-          <p className="text-lg font-semibold text-white mt-1">{isDemo ? 'Dados demonstrativos' : 'Dados sem identificação de unidade'}</p>
-          <p className="text-xs text-slate-400 mt-1">{isDemo ? 'Valores de exemplo. Não representam o resultado das suas casas.' : 'Ainda não é possível determinar se os indicadores são de uma casa ou do grupo.'}</p>
-        </div>
         <div className="flex flex-col gap-2 md:min-w-64">
           <label htmlFor="dashboard-unit" className="text-xs font-medium text-slate-300">Unidade</label>
           <select id="dashboard-unit" disabled className="w-full rounded-xl border border-white/20 bg-slate-900 px-3 py-2.5 text-sm text-slate-400 disabled:opacity-70">
@@ -257,7 +250,7 @@ export const WidgetsPanel: React.FC<WidgetsPanelProps> = ({
               </div>
               <span className="flex items-center space-x-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-violet-500/20 text-violet-300 border border-violet-500/30">
                 <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-ping" />
-                <span>{isDemo ? 'Demo' : 'Salão'}</span>
+                <span>Salão</span>
               </span>
             </div>
 
@@ -422,7 +415,7 @@ export const WidgetsPanel: React.FC<WidgetsPanelProps> = ({
           <div className="mt-3 pt-2 border-t border-white/10 flex items-center justify-between text-[10px] text-slate-400">
             <span className="flex items-center space-x-1">
               <span className="w-1.5 h-1.5 rounded-full bg-slate-400" />
-              <span>{isDemo ? 'Eventos demonstrativos' : 'Eventos carregados'}</span>
+              <span>Eventos</span>
             </span>
             <span>{filteredEvents.length} eventos registrados</span>
           </div>

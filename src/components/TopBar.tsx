@@ -320,7 +320,7 @@ export const TopBar: React.FC<TopBarProps> = ({
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400 shadow-[0_0_6px_#10b981]"></span>
             </span>
             <span className="text-[11px] font-medium text-emerald-300 tracking-wide flex items-center space-x-1">
-              <span>{supabaseConfig.useFallbackIfKeyDisabled ? 'Dados demonstrativos' : 'Conexão de dados'}</span>
+              <span>Conexão de dados</span>
               <span className="text-[9px] opacity-75 font-mono">({supabaseConfig.latencyMs || 42}ms)</span>
             </span>
           </button>
