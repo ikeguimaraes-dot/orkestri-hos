@@ -1,5 +1,7 @@
 import { ProductApp, SalesMetricData, ReservationMetricData, EventLog, OperationalMetricData } from '../types';
 
+export const PIPOU_PLATFORM_URL = 'https://pipou-retaguarda.vercel.app/';
+
 export const INITIAL_PRODUCTS: ProductApp[] = [
   {
     id: 'phi',
@@ -127,7 +129,7 @@ export const INITIAL_PRODUCTS: ProductApp[] = [
     tagline: 'Escalas, Pessoas & Academy',
     category: 'Gestão de Equipes & RH',
     status: 'Ativo',
-    url: 'https://kph-os.vercel.app/pessoas',
+    url: PIPOU_PLATFORM_URL,
     icon: 'users',
     logoUrl: '/logos/vector/pipou.svg',
     gradient: 'from-yellow-400 via-amber-500 to-orange-500',

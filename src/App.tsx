@@ -25,6 +25,7 @@ import {
 } from './lib/supabase';
 import { 
   INITIAL_PRODUCTS, 
+  PIPOU_PLATFORM_URL,
   INITIAL_SALES_METRIC, 
   INITIAL_RESERVATION_METRIC, 
   INITIAL_OPERATIONAL_METRIC, 
@@ -70,10 +71,17 @@ export function App() {
         supabaseService.getEventLogs(),
       ]);
 
-      // Upgrade the previous bundled Pipou entry in locally saved catalogs.
-      setProducts(prods.map(product => product.id === 'pipou' && product.version === 'v2.0-beta'
-        ? { ...product, status: product.status === 'Beta' ? 'Ativo' : product.status, version: 'v2.0' }
-        : product));
+      // Keep Pipou's official destination current in previously saved catalogs.
+      setProducts(prods.map(product => {
+        if (product.id !== 'pipou') return product;
+        return {
+          ...product,
+          url: PIPOU_PLATFORM_URL,
+          ...(product.version === 'v2.0-beta'
+            ? { status: product.status === 'Beta' ? 'Ativo' as const : product.status, version: 'v2.0' }
+            : {}),
+        };
+      }));
       setSalesData(sales);
       setReservationData(reservations);
       setOperationalData(operational);
