@@ -1,3 +1,4 @@
+import type { OperationalUnit } from '../lib/units';
 import React, { useState } from 'react';
 import { 
   TrendingUp, 
@@ -17,6 +18,9 @@ import { SalesMetricData, ReservationMetricData, OperationalMetricData, EventLog
 import { soundManager } from '../lib/sound';
 
 interface WidgetsPanelProps {
+  units: OperationalUnit[];
+  selectedUnitId: string;
+  onSelectUnit: (unitId: string) => void;
   salesData: SalesMetricData;
   reservationData: ReservationMetricData;
   operationalData: OperationalMetricData;
@@ -27,6 +31,9 @@ interface WidgetsPanelProps {
 }
 
 export const WidgetsPanel: React.FC<WidgetsPanelProps> = ({
+  units,
+  selectedUnitId,
+  onSelectUnit,
   salesData,
   reservationData,
   operationalData,
@@ -35,7 +42,8 @@ export const WidgetsPanel: React.FC<WidgetsPanelProps> = ({
   onRefresh,
   onSelectProductById
 }) => {
-  const scopeLabel = 'Unidade não identificada';
+  const selectedUnit = units.find(unit => unit.id === selectedUnitId);
+  const scopeLabel = selectedUnit?.name ?? 'Visão geral';
   const [eventFilter, setEventFilter] = useState<'all' | 'success' | 'warning' | 'error'>('all');
   const [hoveredPoint, setHoveredPoint] = useState<{ day: string; amount: number } | null>(null);
 
@@ -101,13 +109,22 @@ export const WidgetsPanel: React.FC<WidgetsPanelProps> = ({
       <div className="rounded-2xl border border-white/15 bg-white/[0.04] p-4 mb-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex flex-col gap-2 md:min-w-64">
           <label htmlFor="dashboard-unit" className="text-xs font-medium text-slate-300">Unidade</label>
-          <select id="dashboard-unit" disabled className="w-full rounded-xl border border-white/20 bg-slate-900 px-3 py-2.5 text-sm text-slate-400 disabled:opacity-70">
-            <option>Cadastro de unidades pendente</option>
+          <select id="dashboard-unit" value={selectedUnit?.id ?? 'all'} onChange={event => onSelectUnit(event.target.value)}
+            className="w-full rounded-xl border border-white/20 bg-slate-900 px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-cyan-400">
+            <option value="all">Todas as unidades</option>
+            {units.map(unit => <option key={unit.id} value={unit.id}>{unit.name}</option>)}
           </select>
-          <p className="text-xs text-slate-400">Aguardando vínculo com as unidades reais.</p>
         </div>
       </div>
 
+      {selectedUnit ? (
+        <section aria-live="polite" className="rounded-3xl border border-white/15 bg-white/[0.04] p-8 sm:p-12">
+          <span className="text-xs font-semibold uppercase tracking-widest text-cyan-300">Operação da unidade</span>
+          <h3 className="text-2xl font-bold text-white mt-2">{selectedUnit.name}</h3>
+          <p className="text-sm text-slate-400 mt-3">Os indicadores desta unidade ainda não estão disponíveis.</p>
+          <button type="button" onClick={() => onSelectUnit('all')} className="mt-6 rounded-xl border border-white/15 px-4 py-2 text-sm text-slate-200 hover:bg-white/10">Voltar à visão geral</button>
+        </section>
+      ) : (
       <div className="dashboard-grid grid gap-4">
         {/* CARD 1: VENDAS / FATURAMENTO */}
         <div className="rounded-3xl liquid-glass-card p-5 relative overflow-hidden flex flex-col justify-between group">
@@ -532,6 +549,7 @@ export const WidgetsPanel: React.FC<WidgetsPanelProps> = ({
         </div>
 
       </div>
+      )}
     </div>
   );
 };

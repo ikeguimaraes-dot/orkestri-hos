@@ -1,3 +1,4 @@
+import { VERIFIED_UNITS, type OperationalUnit } from './units';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { SupabaseConfig, SalesMetricData, ReservationMetricData, OperationalMetricData, EventLog, ProductApp } from '../types';
 import { 
@@ -149,6 +150,24 @@ class SupabaseService {
         details: `Não foi possível comunicar diretamente com o endpoint (${errorMsg}). Dados locais ativados.`
       };
     }
+  }
+
+  public async getUnits(): Promise<OperationalUnit[]> {
+    try {
+      if (this.client) {
+        const { data, error } = await this.client
+          .from('units')
+          .select('id, name')
+          .eq('active', true)
+          .eq('is_training', false)
+          .order('name');
+        if (!error && data?.length) return data;
+      }
+    } catch (error) {
+      console.warn('Unable to refresh unit catalog:', error);
+    }
+    return this.config.url.replace(/\/$/, '') === DEFAULT_SUPABASE_CONFIG.url
+      ? VERIFIED_UNITS : [];
   }
 
   // Fetch Sales Metrics with fallback

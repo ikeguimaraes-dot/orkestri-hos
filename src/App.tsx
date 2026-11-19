@@ -1,3 +1,4 @@
+import { VERIFIED_UNITS, type OperationalUnit } from './lib/units';
 import React, { useState, useEffect, useCallback } from 'react';
 import { BackgroundOrbs } from './components/BackgroundOrbs';
 import { TopBar } from './components/TopBar';
@@ -34,6 +35,9 @@ import {
 import { soundManager } from './lib/sound';
 
 export function App() {
+  const [units, setUnits] = useState<OperationalUnit[]>(VERIFIED_UNITS);
+  const [selectedUnitId, setSelectedUnitId] = useState('all');
+
   // State: Data & Metrics
   const [products, setProducts] = useState<ProductApp[]>(INITIAL_PRODUCTS);
   const [salesData, setSalesData] = useState<SalesMetricData>(INITIAL_SALES_METRIC);
@@ -63,12 +67,13 @@ export function App() {
   const refreshAllData = useCallback(async () => {
     setIsRefreshing(true);
     try {
-      const [prods, sales, reservations, operational, events] = await Promise.all([
+      const [prods, sales, reservations, operational, events, unitCatalog] = await Promise.all([
         supabaseService.getProducts(),
         supabaseService.getSalesMetrics(),
         supabaseService.getReservationMetrics(),
         supabaseService.getOperationalMetrics(),
         supabaseService.getEventLogs(),
+        supabaseService.getUnits(),
       ]);
 
       // Keep Pipou's official destination current in previously saved catalogs.
@@ -82,6 +87,8 @@ export function App() {
             : {}),
         };
       }));
+      setUnits(unitCatalog);
+      setSelectedUnitId(current => current === 'all' || unitCatalog.some(unit => unit.id === current) ? current : 'all');
       setSalesData(sales);
       setReservationData(reservations);
       setOperationalData(operational);
@@ -217,6 +224,9 @@ export function App() {
         {activeView === 'dashboard' && (
           <div className="animate-in fade-in duration-300">
             <WidgetsPanel
+              units={units}
+              selectedUnitId={selectedUnitId}
+              onSelectUnit={setSelectedUnitId}
               salesData={salesData}
               reservationData={reservationData}
               operationalData={operationalData}
@@ -233,6 +243,9 @@ export function App() {
           <div className="space-y-4 animate-in fade-in duration-300">
             {/* Top Section: Analytical Telemetry Widgets */}
             <WidgetsPanel
+              units={units}
+              selectedUnitId={selectedUnitId}
+              onSelectUnit={setSelectedUnitId}
               salesData={salesData}
               reservationData={reservationData}
               operationalData={operationalData}
