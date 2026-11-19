@@ -4,7 +4,6 @@ import {
   DollarSign, 
   Users, 
   Calendar, 
-  Clock, 
   Flame, 
   CheckCircle2, 
   AlertTriangle, 
@@ -12,17 +11,18 @@ import {
   Info, 
   RefreshCw, 
   Activity, 
-  ArrowUpRight,
-  Sparkles,
-  ChevronRight,
   ShieldCheck,
   Pause,
   Play
 } from 'lucide-react';
 import { SalesMetricData, ReservationMetricData, OperationalMetricData, EventLog } from '../types';
+import { DEMO_UNITS, scopeDemoUnit } from '../lib/dashboardScope';
 import { soundManager } from '../lib/sound';
 
 interface WidgetsPanelProps {
+  selectedUnit: string;
+  onSelectUnit: (unitId: string) => void;
+  isDemo: boolean;
   salesData: SalesMetricData;
   reservationData: ReservationMetricData;
   operationalData: OperationalMetricData;
@@ -33,14 +33,25 @@ interface WidgetsPanelProps {
 }
 
 export const WidgetsPanel: React.FC<WidgetsPanelProps> = ({
-  salesData,
-  reservationData,
-  operationalData,
-  eventsData,
+  salesData: allSales,
+  reservationData: allReservations,
+  operationalData: allOperational,
+  eventsData: allEvents,
+  selectedUnit,
+  onSelectUnit,
+  isDemo,
   isLoading = false,
   onRefresh,
   onSelectProductById
 }) => {
+  const unitIndex = isDemo ? DEMO_UNITS.findIndex(unit => unit.id === selectedUnit) : -1;
+  const unit = DEMO_UNITS[unitIndex];
+  const scoped = unit ? scopeDemoUnit(unitIndex, allSales, allReservations, allOperational, allEvents) : null;
+  const salesData = scoped?.sales ?? allSales;
+  const reservationData = scoped?.reservations ?? allReservations;
+  const operationalData = scoped?.operational ?? allOperational;
+  const eventsData = scoped?.events ?? allEvents;
+  const scopeLabel = unit ? unit.name : isDemo ? 'Todas as unidades · 3 casas' : 'Visão geral · unidade não informada';
   const [eventFilter, setEventFilter] = useState<'all' | 'success' | 'warning' | 'error'>('all');
   const [hoveredPoint, setHoveredPoint] = useState<{ day: string; amount: number } | null>(null);
   const [isLiveStreamActive, setIsLiveStreamActive] = useState(true);
@@ -75,26 +86,22 @@ export const WidgetsPanel: React.FC<WidgetsPanelProps> = ({
   const strokeDashoffset = circumference - (salesData.monthlyGoal > 0 ? (reservationData.occupancyRate / 100) : 0) * circumference;
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 pt-2 pb-28">
+    <div className="w-full mx-auto px-4 sm:px-6 xl:px-8 pt-7 pb-6">
       {/* Header bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
-          <div className="flex items-center space-x-2">
-            <span className="px-2 py-0.5 rounded-md text-[10px] font-semibold uppercase tracking-wider bg-violet-500/20 text-violet-300 border border-violet-500/30">
-              Live Supabase Telemetry
-            </span>
-            <span className="text-xs text-slate-400">Dashboard Operacional & Executivo</span>
-          </div>
-          <h2 className="text-2xl font-bold text-white tracking-tight mt-1 flex items-center space-x-2">
-            <span>Liquid Widgets Analíticos</span>
-            <Activity className="w-5 h-5 text-cyan-400 animate-pulse" />
+          <span className="text-[11px] font-semibold uppercase tracking-widest text-cyan-300">Visão da operação</span>
+          <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight mt-2">
+            Dashboard Operacional &amp; Executivo
           </h2>
+          <p className="text-sm text-slate-400 mt-2">Resultados, salão e cozinha no mesmo lugar.</p>
         </div>
 
         {/* Quick controls */}
         <div className="flex items-center space-x-2">
           {onRefresh && (
             <button
+              disabled={isLoading}
               onClick={() => {
                 soundManager.playClick();
                 onRefresh();
@@ -102,15 +109,30 @@ export const WidgetsPanel: React.FC<WidgetsPanelProps> = ({
               className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl liquid-glass text-xs text-slate-200 hover:text-white hover:bg-white/10 border border-white/15 transition-all"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin text-cyan-400' : ''}`} />
-              <span>Sincronizar Supabase</span>
+              <span>Atualizar indicadores</span>
             </button>
           )}
         </div>
       </div>
 
-      {/* Widgets Grid: 4 Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-        
+      <div className="rounded-2xl border border-white/15 bg-white/[0.04] p-4 mb-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div aria-live="polite">
+          <p className="text-xs text-slate-400">{unit ? 'Operação da unidade' : 'Visão consolidada'}</p>
+          <p className="text-lg font-semibold text-white mt-1">{scopeLabel}</p>
+          <p className="text-xs text-slate-400 mt-1">{unit ? 'Todos os indicadores e eventos abaixo são desta casa.' : isDemo ? 'Totais somam as três casas de exemplo; taxas representam a visão do grupo.' : 'Os dados recebidos ainda não identificam a unidade de origem.'}</p>
+        </div>
+        <div className="flex flex-col gap-2 md:min-w-64">
+          <label htmlFor="dashboard-unit" className="text-xs font-medium text-slate-300">Unidade</label>
+          <select id="dashboard-unit" value={unit?.id ?? 'all'} onChange={event => onSelectUnit(event.target.value)} disabled={!isDemo}
+            className="w-full rounded-xl border border-white/20 bg-slate-900 px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-cyan-400 disabled:opacity-60">
+            <option value="all">{isDemo ? 'Todas as unidades' : 'Unidades não disponíveis'}</option>
+            {isDemo && DEMO_UNITS.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}
+          </select>
+        </div>
+      </div>
+      {isDemo && <p className="text-xs text-amber-200/90 mb-5">Demonstração · Casas e valores ilustrativos. A seleção de unidades reais depende da vinculação dos dados de cada operação.</p>}
+
+      <div className="dashboard-grid grid gap-4">
         {/* CARD 1: VENDAS / FATURAMENTO */}
         <div className="rounded-3xl liquid-glass-card p-5 relative overflow-hidden flex flex-col justify-between group">
           {/* Ambient Glow */}
@@ -223,12 +245,12 @@ export const WidgetsPanel: React.FC<WidgetsPanelProps> = ({
           {/* Breakdown Pills */}
           <div className="mt-3 pt-2 border-t border-white/10 grid grid-cols-2 gap-1.5 text-[10px]">
             <div className="bg-white/5 rounded-lg p-1.5 flex flex-col">
-              <span className="text-slate-400">Serena AI</span>
-              <span className="font-bold text-cyan-300">44% (R$ 214k)</span>
+              <span className="text-slate-400">Meta do mês</span>
+              <span className="font-bold text-cyan-300">{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 }).format(salesData.monthlyGoal)}</span>
             </div>
             <div className="bg-white/5 rounded-lg p-1.5 flex flex-col">
-              <span className="text-slate-400">KPH Balcão</span>
-              <span className="font-bold text-emerald-300">36% (R$ 175k)</span>
+              <span className="text-slate-400">Atingimento</span>
+              <span className="font-bold text-emerald-300">{Math.round(salesData.totalRevenue / salesData.monthlyGoal * 100)}%</span>
             </div>
           </div>
         </div>
@@ -247,12 +269,12 @@ export const WidgetsPanel: React.FC<WidgetsPanelProps> = ({
                 </div>
                 <div>
                   <h3 className="text-xs font-semibold text-slate-200">Reservas & Ocupação</h3>
-                  <span className="text-[10px] text-slate-400">Salão & Mesas em Tempo Real</span>
+                  <span className="text-[10px] text-slate-400">Disponibilidade de mesas</span>
                 </div>
               </div>
               <span className="flex items-center space-x-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-violet-500/20 text-violet-300 border border-violet-500/30">
                 <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-ping" />
-                <span>Live</span>
+                <span>{isDemo ? 'Demo' : 'Salão'}</span>
               </span>
             </div>
 
@@ -383,6 +405,7 @@ export const WidgetsPanel: React.FC<WidgetsPanelProps> = ({
               </div>
             ) : (
               <div className="space-y-2 max-h-[195px] overflow-y-auto pr-1">
+                {filteredEvents.length === 0 && <p className="text-xs text-slate-400 py-6">Nenhum evento neste filtro para {scopeLabel}.</p>}
                 {filteredEvents.slice(0, 4).map(evt => {
                   const getStatusIcon = () => {
                     switch (evt.status) {
@@ -404,7 +427,7 @@ export const WidgetsPanel: React.FC<WidgetsPanelProps> = ({
                       className="p-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/5 transition-colors cursor-pointer group/item text-left"
                     >
                       <div className="flex items-center justify-between text-[10px] mb-0.5">
-                        <span className="font-semibold text-cyan-300">{evt.product}</span>
+                        <span className="font-semibold text-cyan-300">{evt.product}{isDemo && !unit ? ` · ${DEMO_UNITS[allEvents.indexOf(evt) % DEMO_UNITS.length].name}` : ''}</span>
                         <span className="text-slate-400 font-mono text-[9px]">{evt.relativeTime}</span>
                       </div>
                       <div className="flex items-start space-x-1.5 mt-0.5">
@@ -449,7 +472,7 @@ export const WidgetsPanel: React.FC<WidgetsPanelProps> = ({
               </div>
               <span className="flex items-center space-x-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
                 <ShieldCheck className="w-3 h-3" />
-                <span>Meta SLA 95%</span>
+                <span>Meta SLA {operationalData.slaTarget}%</span>
               </span>
             </div>
 
@@ -510,6 +533,33 @@ export const WidgetsPanel: React.FC<WidgetsPanelProps> = ({
               <span className="text-slate-400 block">Total Expedido</span>
               <span className="font-bold text-white text-xs">{operationalData.totalOrdersToday} pratos</span>
             </div>
+          </div>
+        </div>
+
+        <div className="rounded-3xl liquid-glass-card p-5 flex flex-col justify-between">
+          <div>
+            <div className="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center mb-4"><CheckCircle2 className="w-5 h-5" /></div>
+            <h3 className="text-sm font-semibold text-slate-200">Pedidos expedidos</h3>
+            <p className="text-xs text-slate-400 mt-1">Hoje · {unit?.name ?? 'Visão geral'}</p>
+            <p className="text-3xl font-bold text-white mt-5">{operationalData.totalOrdersToday}</p>
+            <p className="text-xs text-slate-400 mt-2">Produção concluída no dia</p>
+          </div>
+          <div className="mt-5 space-y-3 border-t border-white/10 pt-4">
+            {operationalData.shifts.map(shift => <div key={shift.name} className="flex justify-between gap-2 text-xs"><span className="text-slate-400">{shift.name}</span><span className="font-medium text-emerald-300">{shift.orders}</span></div>)}
+          </div>
+        </div>
+        <div className="rounded-3xl liquid-glass-card p-5 flex flex-col justify-between">
+          <div>
+            <div className="w-9 h-9 rounded-xl bg-blue-500/20 text-blue-300 flex items-center justify-center mb-4"><Users className="w-5 h-5" /></div>
+            <h3 className="text-sm font-semibold text-slate-200">Capacidade do salão</h3>
+            <p className="text-xs text-slate-400 mt-1">{unit?.name ?? 'Visão geral'}</p>
+            <p className="text-3xl font-bold text-white mt-5">{reservationData.totalTables - reservationData.occupiedTables} <span className="text-sm font-normal text-slate-400">mesas livres</span></p>
+            <p className="text-xs text-slate-400 mt-2">de {reservationData.totalTables} mesas disponíveis na operação</p>
+          </div>
+          <div className="mt-5 space-y-3 border-t border-white/10 pt-4 text-xs">
+            <div className="flex justify-between"><span className="text-slate-400">Mesas ocupadas</span><span className="text-blue-300">{reservationData.occupiedTables}</span></div>
+            <div className="flex justify-between"><span className="text-slate-400">Pessoas na espera</span><span className="text-amber-300">{reservationData.waitlistCount}</span></div>
+            <p className="text-slate-400">Pico previsto: {reservationData.peakWindow}</p>
           </div>
         </div>
 

@@ -85,7 +85,7 @@ export const AppLauncher: React.FC<AppLauncherProps> = ({
   };
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 pt-4 pb-28">
+    <div className="w-full mx-auto px-4 sm:px-6 xl:px-8 pt-4 pb-28">
       {/* Header section with search and filter */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-6">
         <div>

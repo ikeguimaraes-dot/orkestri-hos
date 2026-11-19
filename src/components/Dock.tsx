@@ -96,7 +96,7 @@ export const Dock: React.FC<DockProps> = ({
         <div className="relative group flex flex-col items-center">
           {hoveredItem === 'dashboard' && (
             <div className="absolute -top-10 px-2.5 py-1 rounded-lg liquid-glass text-[11px] font-medium text-white shadow-xl pointer-events-none whitespace-nowrap animate-in fade-in zoom-in-95">
-              Dashboard Analítico
+              Dashboard Operacional & Executivo
             </div>
           )}
           <button

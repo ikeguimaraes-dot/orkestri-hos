@@ -94,7 +94,7 @@ export const TopBar: React.FC<TopBarProps> = ({
   };
 
   return (
-    <header className="relative z-40 h-8 w-full px-3 liquid-glass-subtle border-b border-white/10 flex items-center justify-between text-xs text-slate-200 select-none backdrop-blur-2xl">
+    <header className="relative z-40 min-h-20 shrink-0 w-full px-3 sm:px-6 py-2 gap-y-2 flex-wrap liquid-glass-subtle border-b border-white/10 flex items-center justify-between text-xs text-slate-200 select-none backdrop-blur-2xl">
       {/* Left Menu Items (macOS Style) */}
       <div className="flex items-center space-x-1 menu-container">
         {/* Apple / Orkestri Logo */}
@@ -108,14 +108,14 @@ export const TopBar: React.FC<TopBarProps> = ({
             <img 
               src="/logos/orkestri.png" 
               alt="Orkestri" 
-              className="h-4 w-auto object-contain filter drop-shadow-[0_0_8px_rgba(0,242,254,0.4)]"
+              className="h-12 sm:h-14 w-auto object-contain filter drop-shadow-[0_0_8px_rgba(0,242,254,0.4)]"
             />
             <span className="font-semibold text-white tracking-wide text-xs">HOS</span>
           </button>
 
           {/* Apple Dropdown */}
           {activeMenu === 'apple' && (
-            <div className="absolute top-7 left-0 w-64 rounded-xl liquid-glass py-1.5 px-1 shadow-2xl border border-white/20 animate-in fade-in zoom-in-95 duration-150 z-50">
+            <div className="absolute top-full mt-2 left-0 w-64 rounded-xl liquid-glass py-1.5 px-1 shadow-2xl border border-white/20 animate-in fade-in zoom-in-95 duration-150 z-50">
               <div className="px-3 py-1.5 border-b border-white/10">
                 <div className="font-semibold text-white text-xs">Orkestri HOS 2026.1</div>
                 <div className="text-[10px] text-slate-400">macOS / VisionOS Liquid Glass Edition</div>
@@ -186,12 +186,12 @@ export const TopBar: React.FC<TopBarProps> = ({
                 : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
             }`}
           >
-            Analítico
+            Dashboard
           </button>
         </div>
 
         {/* System Submenus */}
-        <div className="hidden md:flex items-center space-x-1 pl-2">
+        <div className="hidden xl:flex items-center space-x-1 pl-2">
           {['Arquivo', 'Visualizar', 'Widgets', 'Janela'].map((menu) => (
             <div key={menu} className="relative">
               <button
@@ -204,7 +204,7 @@ export const TopBar: React.FC<TopBarProps> = ({
               </button>
 
               {activeMenu === menu && (
-                <div className="absolute top-7 left-0 w-52 rounded-xl liquid-glass py-1 px-1 shadow-2xl border border-white/20 z-50">
+                <div className="absolute top-full mt-2 left-0 w-52 rounded-xl liquid-glass py-1 px-1 shadow-2xl border border-white/20 z-50">
                   {menu === 'Arquivo' && (
                     <>
                       <button
@@ -243,7 +243,7 @@ export const TopBar: React.FC<TopBarProps> = ({
                         onClick={() => { setActiveMenu(null); onChangeView('dashboard'); }}
                         className="w-full text-left px-3 py-1.5 text-xs text-slate-200 hover:bg-cyan-500/20 rounded-lg flex items-center justify-between"
                       >
-                        <span>Modo Dashboard Analítico</span>
+                        <span>Modo Dashboard Operacional & Executivo</span>
                         <span className="text-[10px] text-slate-400">⌘3</span>
                       </button>
                     </>
@@ -306,7 +306,7 @@ export const TopBar: React.FC<TopBarProps> = ({
         </button>
 
         {/* Supabase Status Pill with ping pulse */}
-        <div className="relative status-pill-container">
+        <div className="relative status-pill-container hidden sm:block">
           <button
             onClick={() => {
               soundManager.playClick();
@@ -328,7 +328,7 @@ export const TopBar: React.FC<TopBarProps> = ({
 
           {/* Supabase Diagnostic Popover */}
           {showStatusPopover && (
-            <div className="absolute right-0 top-7 w-80 rounded-2xl liquid-glass p-3.5 shadow-2xl border border-white/20 z-50 text-left animate-in fade-in zoom-in-95">
+            <div className="absolute right-0 top-full mt-2 w-80 rounded-2xl liquid-glass p-3.5 shadow-2xl border border-white/20 z-50 text-left animate-in fade-in zoom-in-95">
               <div className="flex items-center justify-between pb-2 border-b border-white/10">
                 <div className="flex items-center space-x-2">
                   <div className="w-7 h-7 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
@@ -415,7 +415,7 @@ export const TopBar: React.FC<TopBarProps> = ({
         </button>
 
         {/* Live Digital Clock & Date */}
-        <div className="px-2 py-0.5 rounded-md hover:bg-white/10 transition-colors text-slate-100 font-medium text-[11px] tracking-wide flex items-center space-x-1.5">
+        <div className="hidden lg:flex px-2 py-0.5 rounded-md hover:bg-white/10 transition-colors text-slate-100 font-medium text-[11px] tracking-wide items-center space-x-1.5">
           <span>{currentDate}</span>
           <span className="text-slate-400">•</span>
           <span className="font-mono text-cyan-300 drop-shadow-[0_0_8px_rgba(0,242,254,0.3)]">{currentTime || '08:58:00'}</span>

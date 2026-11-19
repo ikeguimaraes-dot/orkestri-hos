@@ -44,6 +44,7 @@ export function App() {
   const [supabaseConfig, setSupabaseConfig] = useState<SupabaseConfig>(loadStoredConfig());
 
   // State: App UI & Windows
+  const [selectedUnit, setSelectedUnit] = useState('all');
   const [activeView, setActiveView] = useState<ActiveView>('split');
   const [activeProductWindow, setActiveProductWindow] = useState<ProductApp | null>(null);
   const [minimizedWindowIds, setMinimizedWindowIds] = useState<string[]>([]);
@@ -240,7 +241,10 @@ export function App() {
               reservationData={reservationData}
               operationalData={operationalData}
               eventsData={eventsData}
-              isLoading={isLoading}
+              isLoading={isLoading || isRefreshing}
+              selectedUnit={selectedUnit}
+              onSelectUnit={setSelectedUnit}
+              isDemo={supabaseConfig.useFallbackIfKeyDisabled}
               onRefresh={refreshAllData}
               onSelectProductById={handleSelectProductById}
             />
@@ -256,7 +260,10 @@ export function App() {
               reservationData={reservationData}
               operationalData={operationalData}
               eventsData={eventsData}
-              isLoading={isLoading}
+              isLoading={isLoading || isRefreshing}
+              selectedUnit={selectedUnit}
+              onSelectUnit={setSelectedUnit}
+              isDemo={supabaseConfig.useFallbackIfKeyDisabled}
               onRefresh={refreshAllData}
               onSelectProductById={handleSelectProductById}
             />

@@ -462,7 +462,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                       Integração Nativa Supabase
                     </h3>
                     <p className="text-xs text-slate-300 mt-1 leading-relaxed">
-                      Conexão direta via <code className="text-cyan-300 font-mono">@supabase/supabase-js</code>. Os Liquid Widgets buscam métricas de vendas, ocupação em tempo real, SLA da cozinha e logs de auditoria.
+                      Conexão direta via <code className="text-cyan-300 font-mono">@supabase/supabase-js</code>. Os indicadores do dashboard buscam métricas de vendas, ocupação em tempo real, SLA da cozinha e logs de auditoria.
                     </p>
                   </div>
                 </div>

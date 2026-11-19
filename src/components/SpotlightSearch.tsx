@@ -83,7 +83,7 @@ export const SpotlightSearch: React.FC<SpotlightSearchProps> = ({
     },
     {
       id: 'action-view-dash',
-      name: 'Abrir Dashboard Analítico',
+      name: 'Abrir Dashboard Operacional & Executivo',
       description: 'Ver métricas e gráficos em tela cheia',
       action: () => onChangeView('dashboard'),
       icon: Layers
