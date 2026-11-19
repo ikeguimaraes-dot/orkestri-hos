@@ -26,9 +26,10 @@ export const AppLauncher: React.FC<AppLauncherProps> = ({
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('Todos');
 
-  const categories = ['Todos', ...Array.from(new Set(products.map(p => p.category)))];
+  const visibleProducts = products.filter(product => product.id !== 'ops');
+  const categories = ['Todos', ...Array.from(new Set(visibleProducts.map(p => p.category)))];
 
-  const filteredProducts = products.filter(product => {
+  const filteredProducts = visibleProducts.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           product.tagline.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           product.description.toLowerCase().includes(searchTerm.toLowerCase());
