@@ -1,23 +1,13 @@
+import { ProductLogo } from './ProductLogo';
 import React, { useState } from 'react';
 import { 
-  Bot, 
-  Calculator, 
-  Utensils, 
-  Users, 
-  Calendar, 
-  Layers, 
   Search, 
   Plus, 
-  ExternalLink, 
   Sparkles, 
   ArrowUpRight,
   TrendingUp,
-  SlidersHorizontal,
-  LucideIcon,
   CheckCircle2,
-  Clock,
   Wrench,
-  Database
 } from 'lucide-react';
 import { ProductApp, AppStatus } from '../types';
 import { soundManager } from '../lib/sound';
@@ -35,18 +25,6 @@ export const AppLauncher: React.FC<AppLauncherProps> = ({
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('Todos');
-
-  const getProductIcon = (iconName: string): LucideIcon => {
-    switch (iconName) {
-      case 'bot': return Bot;
-      case 'calculator': return Calculator;
-      case 'utensils': return Utensils;
-      case 'users': return Users;
-      case 'calendar': return Calendar;
-      case 'layers': return Layers;
-      default: return Database;
-    }
-  };
 
   const categories = ['Todos', ...Array.from(new Set(products.map(p => p.category)))];
 
@@ -146,7 +124,6 @@ export const AppLauncher: React.FC<AppLauncherProps> = ({
       {/* App Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {filteredProducts.map((prod) => {
-          const IconComp = getProductIcon(prod.icon);
 
           return (
             <div
@@ -157,31 +134,11 @@ export const AppLauncher: React.FC<AppLauncherProps> = ({
               }}
               className="group relative rounded-2xl liquid-glass-card p-5 cursor-pointer flex flex-col justify-between overflow-hidden"
             >
-              {/* Top ambient illumination glow */}
-              <div 
-                className={`absolute -top-24 -right-24 w-48 h-48 rounded-full bg-gradient-to-br ${prod.gradient} opacity-20 blur-2xl group-hover:opacity-40 transition-opacity duration-500`}
-              />
-
               {/* Card Header: 3D Icon + Badges */}
               <div>
                 <div className="flex items-start justify-between mb-4">
-                  {/* 3D Glass Icon / Logo */}
-                  <div className="relative">
-                    <div className={`w-14 h-14 rounded-2xl bg-gradient-to-tr ${prod.gradient} p-0.5 shadow-lg group-hover:scale-105 transition-transform duration-300`}>
-                      <div className="w-full h-full rounded-[14px] bg-black/40 backdrop-blur-sm flex items-center justify-center relative overflow-hidden p-2">
-                        {/* Upper highlight */}
-                        <div className="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-white/30 to-transparent pointer-events-none" />
-                        {prod.logoUrl ? (
-                          <img 
-                            src={prod.logoUrl} 
-                            alt={prod.name} 
-                            className="w-full h-full object-contain filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)]" 
-                          />
-                        ) : (
-                          <IconComp className="w-7 h-7 text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]" />
-                        )}
-                      </div>
-                    </div>
+                  <div className="flex h-24 w-52 max-w-[70%] items-center justify-start py-2">
+                    <ProductLogo product={prod} className="h-full w-full max-h-20 transition-transform duration-200 group-hover:scale-105 origin-left" />
                   </div>
 
                   <div className="flex flex-col items-end space-y-1">

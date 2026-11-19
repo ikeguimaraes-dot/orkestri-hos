@@ -1,18 +1,11 @@
+import { ProductLogo } from './ProductLogo';
 import React, { useState } from 'react';
 import { 
-  Bot, 
-  Calculator, 
-  Utensils, 
-  Users, 
-  Calendar, 
-  Layers, 
   LayoutGrid, 
   BarChart3, 
   Settings, 
   Search, 
   Trash2,
-  Database,
-  LucideIcon
 } from 'lucide-react';
 import { ProductApp } from '../types';
 import { soundManager } from '../lib/sound';
@@ -40,18 +33,6 @@ export const Dock: React.FC<DockProps> = ({
 }) => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
-  const getProductIcon = (iconName: string): LucideIcon => {
-    switch (iconName) {
-      case 'bot': return Bot;
-      case 'calculator': return Calculator;
-      case 'utensils': return Utensils;
-      case 'users': return Users;
-      case 'calendar': return Calendar;
-      case 'layers': return Layers;
-      default: return Database;
-    }
-  };
-
   const isAppRunning = (id: string) => {
     return activeWindowId === id || minimizedWindowIds.includes(id);
   };
@@ -59,7 +40,7 @@ export const Dock: React.FC<DockProps> = ({
   return (
     <div className="fixed bottom-3 inset-x-0 flex justify-center items-end z-40 pointer-events-none">
       {/* Dock Container with Liquid Glassmorphism & Reflection */}
-      <div className="pointer-events-auto relative px-3 py-2 rounded-2xl liquid-dock flex items-end space-x-2 border border-white/20 transition-all duration-300 shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
+      <div className="pointer-events-auto relative max-w-[calc(100vw-24px)] overflow-x-auto lg:overflow-visible px-3 py-2 rounded-2xl liquid-dock flex items-end space-x-2 border border-white/20 transition-all duration-300 shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
         
         {/* Mirror Reflection beneath dock */}
         <div className="absolute -bottom-6 inset-x-4 h-6 opacity-25 blur-sm overflow-hidden pointer-events-none [mask-image:linear-gradient(to_bottom,rgba(0,0,0,1),transparent)]">
@@ -67,7 +48,7 @@ export const Dock: React.FC<DockProps> = ({
         </div>
 
         {/* 1. App Launcher Grid Icon */}
-        <div className="relative group flex flex-col items-center">
+        <div className="relative group shrink-0 flex flex-col items-center">
           {hoveredItem === 'launcher' && (
             <div className="absolute -top-10 px-2.5 py-1 rounded-lg liquid-glass text-[11px] font-medium text-white shadow-xl pointer-events-none whitespace-nowrap animate-in fade-in zoom-in-95">
               Launcher de Apps
@@ -93,7 +74,7 @@ export const Dock: React.FC<DockProps> = ({
         </div>
 
         {/* 2. Dashboard Analytics Icon */}
-        <div className="relative group flex flex-col items-center">
+        <div className="relative group shrink-0 flex flex-col items-center">
           {hoveredItem === 'dashboard' && (
             <div className="absolute -top-10 px-2.5 py-1 rounded-lg liquid-glass text-[11px] font-medium text-white shadow-xl pointer-events-none whitespace-nowrap animate-in fade-in zoom-in-95">
               Dashboard Operacional & Executivo
@@ -123,11 +104,10 @@ export const Dock: React.FC<DockProps> = ({
 
         {/* 3. Predefined SaaS Products */}
         {products.map((prod) => {
-          const IconComp = getProductIcon(prod.icon);
           const running = isAppRunning(prod.id);
 
           return (
-            <div key={prod.id} className="relative group flex flex-col items-center">
+            <div key={prod.id} className="relative group shrink-0 flex flex-col items-center">
               {hoveredItem === prod.id && (
                 <div className="absolute -top-11 px-3 py-1 rounded-lg liquid-glass text-[11px] font-medium text-white shadow-xl pointer-events-none whitespace-nowrap animate-in fade-in zoom-in-95 flex flex-col items-center">
                   <span>{prod.name}</span>
@@ -141,33 +121,10 @@ export const Dock: React.FC<DockProps> = ({
                 }}
                 onMouseEnter={() => setHoveredItem(prod.id)}
                 onMouseLeave={() => setHoveredItem(null)}
-                className={`relative w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-200 transform origin-bottom hover:scale-125 hover:-translate-y-2 active:scale-95 group shadow-lg ${
-                  running 
-                    ? 'ring-2 ring-cyan-400/80 shadow-[0_0_20px_rgba(0,242,254,0.4)]' 
-                    : ''
-                }`}
-                style={{
-                  background: `linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%)`,
-                  backdropFilter: 'blur(20px)',
-                  border: '1px solid rgba(255, 255, 255, 0.25)'
-                }}
+                aria-label={`Abrir ${prod.name}`}
+                className={`relative w-16 sm:w-20 h-14 flex items-center justify-center transition-transform duration-200 origin-bottom hover:scale-110 hover:-translate-y-1 active:scale-95 ${running ? 'border-b-2 border-cyan-300' : ''}`}
               >
-                {/* Product 3D Stylized Background Glow */}
-                <div className={`absolute inset-0 rounded-2xl bg-gradient-to-tr ${prod.gradient} opacity-85 group-hover:opacity-100 transition-opacity`} />
-                
-                {/* Glossy Top Glass Glare */}
-                <div className="absolute top-0 inset-x-0 h-1/2 rounded-t-2xl bg-gradient-to-b from-white/35 to-transparent pointer-events-none" />
-
-                {/* Inner Icon or Logo */}
-                {prod.logoUrl ? (
-                  <img 
-                    src={prod.logoUrl} 
-                    alt={prod.name} 
-                    className="relative z-10 w-7 h-7 object-contain filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)] transition-transform group-hover:scale-110" 
-                  />
-                ) : (
-                  <IconComp className="relative z-10 w-6 h-6 text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] transition-transform group-hover:scale-110" />
-                )}
+                <ProductLogo product={prod} className="w-auto max-w-full max-h-12" />
 
                 {/* Status dot if Beta or Maintenance */}
                 {prod.status === 'Beta' && (
@@ -194,7 +151,7 @@ export const Dock: React.FC<DockProps> = ({
         <div className="w-[1px] h-8 bg-white/20 mx-1 self-center" />
 
         {/* 4. Spotlight Command Palette */}
-        <div className="relative group flex flex-col items-center">
+        <div className="relative group shrink-0 flex flex-col items-center">
           {hoveredItem === 'search' && (
             <div className="absolute -top-10 px-2.5 py-1 rounded-lg liquid-glass text-[11px] font-medium text-white shadow-xl pointer-events-none whitespace-nowrap animate-in fade-in zoom-in-95">
               Spotlight (⌘K)
@@ -215,7 +172,7 @@ export const Dock: React.FC<DockProps> = ({
         </div>
 
         {/* 5. Settings / Supabase Manager */}
-        <div className="relative group flex flex-col items-center">
+        <div className="relative group shrink-0 flex flex-col items-center">
           {hoveredItem === 'settings' && (
             <div className="absolute -top-10 px-2.5 py-1 rounded-lg liquid-glass text-[11px] font-medium text-white shadow-xl pointer-events-none whitespace-nowrap animate-in fade-in zoom-in-95">
               Configurações & Supabase
@@ -236,7 +193,7 @@ export const Dock: React.FC<DockProps> = ({
         </div>
 
         {/* 6. Clean Cache / Trash */}
-        <div className="relative group flex flex-col items-center">
+        <div className="relative group shrink-0 flex flex-col items-center">
           {hoveredItem === 'trash' && (
             <div className="absolute -top-10 px-2.5 py-1 rounded-lg liquid-glass text-[11px] font-medium text-white shadow-xl pointer-events-none whitespace-nowrap animate-in fade-in zoom-in-95">
               Limpar Cache

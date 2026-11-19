@@ -1,3 +1,4 @@
+import { ProductLogo } from './ProductLogo';
 import React, { useState } from 'react';
 import { 
   X, 
@@ -104,12 +105,8 @@ export const AppWindow: React.FC<AppWindowProps> = ({
 
           {/* Center Window Title */}
           <div className="flex items-center space-x-2">
-            <div className={`w-5 h-5 rounded-md bg-gradient-to-tr ${product.gradient} p-0.5 flex items-center justify-center overflow-hidden`}>
-              {product.logoUrl ? (
-                <img src={product.logoUrl} alt={product.name} className="w-full h-full object-contain" />
-              ) : (
-                <IconComp className="w-3 h-3 text-white" />
-              )}
+            <div className="w-20 h-7 flex items-center justify-center">
+              <ProductLogo product={product} className="max-w-full max-h-full" />
             </div>
             <span className="font-semibold text-xs text-white tracking-wide">
               {product.name}
@@ -170,15 +167,9 @@ export const AppWindow: React.FC<AppWindowProps> = ({
               {/* Product Hero Banner */}
               <div className="relative rounded-2xl overflow-hidden p-6 border border-white/15 bg-gradient-to-r from-white/[0.08] to-transparent">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                  <div className="flex items-center space-x-4">
-                    <div className={`w-16 h-16 rounded-2xl bg-gradient-to-tr ${product.gradient} p-0.5 shadow-xl`}>
-                      <div className="w-full h-full rounded-[14px] bg-black/40 backdrop-blur-sm flex items-center justify-center p-2 overflow-hidden">
-                        {product.logoUrl ? (
-                          <img src={product.logoUrl} alt={product.name} className="w-full h-full object-contain filter drop-shadow-md" />
-                        ) : (
-                          <IconComp className="w-8 h-8 text-white drop-shadow-md" />
-                        )}
-                      </div>
+                  <div className="flex flex-wrap items-center gap-4">
+                    <div className="w-44 h-24 shrink-0 flex items-center justify-center">
+                      <ProductLogo product={product} className="w-full h-full max-h-20" />
                     </div>
                     <div>
                       <div className="flex items-center space-x-2">

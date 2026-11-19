@@ -1,17 +1,11 @@
+import { ProductLogo } from './ProductLogo';
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   Search, 
-  Bot, 
-  Calculator, 
-  Utensils, 
-  Users, 
-  Calendar, 
   Layers, 
   Database, 
-  Sliders, 
   Sparkles, 
   ArrowRight,
-  LucideIcon
 } from 'lucide-react';
 import { ProductApp } from '../types';
 import { soundManager } from '../lib/sound';
@@ -36,18 +30,6 @@ export const SpotlightSearch: React.FC<SpotlightSearchProps> = ({
   const [query, setQuery] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
-
-  const getProductIcon = (iconName: string): LucideIcon => {
-    switch (iconName) {
-      case 'bot': return Bot;
-      case 'calculator': return Calculator;
-      case 'utensils': return Utensils;
-      case 'users': return Users;
-      case 'calendar': return Calendar;
-      case 'layers': return Layers;
-      default: return Database;
-    }
-  };
 
   useEffect(() => {
     if (isOpen) {
@@ -161,7 +143,6 @@ export const SpotlightSearch: React.FC<SpotlightSearchProps> = ({
                     Aplicativos SaaS
                   </div>
                   {matchedProducts.map((prod, idx) => {
-                    const IconComp = getProductIcon(prod.icon);
                     const isSelected = selectedIndex === idx;
 
                     return (
@@ -179,12 +160,8 @@ export const SpotlightSearch: React.FC<SpotlightSearchProps> = ({
                         }`}
                       >
                         <div className="flex items-center space-x-3">
-                          <div className={`w-8 h-8 rounded-lg bg-gradient-to-tr ${prod.gradient} flex items-center justify-center overflow-hidden`}>
-                            {prod.logoUrl ? (
-                              <img src={prod.logoUrl} alt={prod.name} className="w-full h-full object-contain p-0.5" />
-                            ) : (
-                              <IconComp className="w-4 h-4 text-white" />
-                            )}
+                          <div className="w-24 h-12 shrink-0 flex items-center justify-center">
+                            <ProductLogo product={prod} className="max-w-full max-h-full" />
                           </div>
                           <div>
                             <div className="text-xs font-bold text-white flex items-center space-x-2">
